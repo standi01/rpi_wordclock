@@ -9,7 +9,7 @@ echo -e "\e[34mDone.\e[0m"
 
 # Install 3rd party dependencies
 echo -e "\e[34mInstalling 3rd party dependencies:\e[0m"
-for pac in python-pip python-scipy scons git swig ttf-freefont
+for pac in python-pip python-scipy scons git swig ttf-freefont dialog
 do
    echo -e "\e[34mInstalling dependency $pac...\e[0m"
    sudo apt-get install $pac -y
@@ -62,6 +62,14 @@ echo -e "\e[34mAdding the wordclock software to the startup scripts of the RPi..
     echo "@reboot sudo python ${USER_HOME}/rpi_wordclock/wordclock.py" >> $CRONTAB_FILE
     sudo crontab $CRONTAB_FILE
     rm $CRONTAB_FILE
+
+exec 3>&1;
+result=$(dialog --inputbox test 0 0 2>&1 1>&3);
+exitcode=$?;
+exec 3>&-;
+
+echo "result: $result"
+echo "exitcode: $exitcode"
 
 echo -e "\e[34mTo start the wordclock, system reboot required. Reboot now...?\e[0m"
 
