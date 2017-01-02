@@ -54,9 +54,10 @@ class wordclock:
         self.plugins = []
         for plugin in plugins:
             # Check the config-file, whether to activate or deactivate the plugin
+            print('Plugin ' + str(index) + ': "' + plugin + '".')
             try:
                 if not self.config.getboolean('plugin_'+plugin, 'activate'):
-                    print('Skipping plugin ' + plugin + ' since it is set to activate=false in the config-file.')
+                    print('  Skipped, since activate-flag is set to false within the config-file.')
                     continue
             except:
                 print('  INFO: No activate-flag set for plugin '+plugin+' within the config-file. Will be imported.')
@@ -69,12 +70,12 @@ class wordclock:
                 self.plugins.append(import_module('wordclock_plugins.' + plugin + '.plugin').plugin(self.config))
                 # Search for default plugin to display the time
                 if plugin == 'time_default':
-                    print('  Selected "' + plugin + '" as default plugin')
+                    print('  Selected as default plugin')
                     self.default_plugin = index
-                print('Imported plugin ' + str(index) + ': "' + plugin + '".')
+                print('  Imported.')
                 index +=1
             except:
-                print('Failed to import plugin ' + plugin + '!')
+                print('  Failed to import plugin!')
 
 
     def startup(self):
